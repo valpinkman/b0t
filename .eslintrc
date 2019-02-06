@@ -1,6 +1,6 @@
 {
-  "extends": ["airbnb-base", "plugin:flowtype/recommended", "prettier"],
-  "plugins": ["import", "flowtype"],
+  "extends": ["airbnb-base", "prettier"],
+  "plugins": ["import"],
   "env": {
     "browser": false,
     "node": true

@@ -1,6 +1,5 @@
-// @flow
-import { send } from 'micro'
+const { send } = require('micro')
 
-export default async (req: Request, res: Response) => {
+module.exports = (req, res) => {
   send(res, 200, 'add')
 }
