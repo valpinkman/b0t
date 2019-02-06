@@ -1,0 +1,6 @@
+## PACKAGES
+node_modules
+flow-typed
+
+## SENSIBLE FILES
+.env

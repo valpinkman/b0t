@@ -1,0 +1,17 @@
+{
+  "extends": ["airbnb-base", "plugin:flowtype/recommended", "prettier"],
+  "plugins": ["import", "flowtype"],
+  "env": {
+    "browser": false,
+    "node": true
+  },
+  "rules": {
+    "indent": [2, 2],
+    "import/no-extraneous-dependencies": [
+      2,
+      {
+        "devDependencies": true
+      }
+    ]
+  }
+}
