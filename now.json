@@ -4,7 +4,7 @@
   "alias": ["b0t", "b0t.dr0p.pink"],
   "builds": [
     {
-      "src": "src/api/*.js",
+      "src": "build/api/*.js",
       "use": "@now/node",
       "config": {
         "maxLambdaSize": "10mb"
@@ -14,19 +14,19 @@
   "routes": [
     {
       "src": "/add",
-      "dest": "src/api/add.js"
+      "dest": "build/api/add.js"
     },
     {
       "src": "/playlist",
-      "dest": "src/api/playlist.js"
+      "dest": "build/api/playlist.js"
     },
     {
       "src": "/like",
-      "dest": "src/api/like.js"
+      "dest": "build/api/like.js"
     },
     {
       "src": "/",
-      "dest": "src/api/index.js"
+      "dest": "build/api/index.js"
     }
   ],
   "env": {
