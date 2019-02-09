@@ -17,6 +17,7 @@
     "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.3.1",
     "babel-eslint": "^10.0.1",
+    "dotenv": "^6.2.0",
     "eslint": "^5.13.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^4.0.0",
@@ -26,12 +27,11 @@
     "prettier": "^1.16.4"
   },
   "dependencies": {
-    "micro": "^9.3.3"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn prettier",
-      "pre-push": "yarn lint"
-    }
+    "date-fns": "^1.30.1",
+    "firebase": "^5.8.2",
+    "micro": "^9.3.3",
+    "node-fetch": "^2.3.0",
+    "qs": "^6.6.0",
+    "soundcloud-nodejs-api-wrapper": "^0.3.2"
   }
 }
