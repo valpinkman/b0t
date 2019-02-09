@@ -1,38 +1,99 @@
 // Load .env variables
 require('dotenv').config()
 
-const { text, sendError, createError } = require('micro')
+const { send, text, sendError, createError } = require('micro')
 const { parse } = require('qs')
 const fetch = require('node-fetch')
+
+const SoundCloud = require('../services/soundcloud')
+const Firebase = require('../services/firebase')
+const { isTokenLegit } = require('../utils/slack')
+const { getPreviousMonday } = require('../utils/time')
 
 module.exports = async (req, res) => {
   try {
     // Parses the response of the slack command request
     const txt = await text(req)
-    let base = 'https'
-    if (!txt) throw createError(400, 'not data to check')
-    const parsed = parse(txt)
+    if (!txt) throw createError(400, 'no data')
+
+    const { token, response_url, text: weekAgo } = parse(txt) // eslint-disable-line camelcase
+
     res.writeHead(200, {
       'Content-Type': 'application/json',
     })
 
-    fetch(parsed.response_url, {
+    if (!token || !isTokenLegit(token))
+      throw createError(403, 'token is undefined or does not match')
+
+    await fetch(response_url, {
       method: 'POST',
       body: JSON.stringify({ text: 'checking for favorites...', response_type: 'ephemeral' }),
     })
 
-    if (req.headers.host.indexOf('localhost') || req.headers.host.indexOf('127.0.0.1')) {
-      base = 'http'
-    }
+    const { tracks } = await Firebase.getFavsFromWeek(weekAgo || 0)
 
-    // sends data to /playlist to create playlist...
-    await fetch(`${base}://${req.headers.host}/playlist`, {
-      method: 'POST',
-      body: JSON.stringify(parsed),
-    })
+    if (!tracks.size) {
+      await fetch(response_url, {
+        method: 'POST',
+        body: JSON.stringify({
+          text: 'no tracks favorited yet this week',
+        }),
+      })
+    } else {
+      const weekTracks = []
+      let found
+      let body
+      const title = `[dr0p select ${getPreviousMonday(weekAgo)}]`
+      const playlists = await SoundCloud.getPlaylists()
+
+      tracks.forEach((_, id) => {
+        weekTracks.push({ id })
+      })
+
+      playlists.forEach(playlist => {
+        if (playlist.title === title) {
+          found = playlist
+        }
+      })
+
+      if (found) {
+        body = {
+          playlist: {
+            tracks: weekTracks,
+          },
+        }
+      } else {
+        body = {
+          playlist: {
+            title,
+            tracks: weekTracks,
+            sharing: 'private',
+          },
+        }
+      }
+
+      const playlist = await SoundCloud.createOrUpdatePlaylist(body, found)
+      const message = found ? 'playlist updated!' : 'playlist created!'
+      const color = found ? '#FF6C02' : '#0088ff'
+
+      fetch(response_url, {
+        method: 'POST',
+        body: JSON.stringify({
+          attachments: [
+            {
+              color,
+              title: `${playlist.title}`,
+              title_link: playlist.permalink_url,
+              pretext: message,
+            },
+          ],
+        }),
+      })
+    }
 
     res.end()
   } catch (error) {
+    if (error.message === 'no data') send(res, 200, 'no data to analyse')
     sendError(req, res, error)
   }
 }
