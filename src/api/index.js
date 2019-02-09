@@ -76,7 +76,7 @@ module.exports = async (req, res) => {
       const message = found ? 'playlist updated!' : 'playlist created!'
       const color = found ? '#FF6C02' : '#0088ff'
 
-      fetch(response_url, {
+      await fetch(response_url, {
         method: 'POST',
         body: JSON.stringify({
           attachments: [
