@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
     })
 
     // ... and sends an immediate response without waiting for fetch to finish
-    send(res, 200, { text: 'creating playlist...' })
+    send(res, 200, { text: 'checking for favorites...', response_type: 'ephemeral' })
   } catch (error) {
     sendError(req, res, error)
   }

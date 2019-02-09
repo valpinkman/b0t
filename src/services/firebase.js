@@ -59,14 +59,21 @@ class Firebase {
   async getFavsFromWeek(weekAgo = 0) {
     const monday = getPreviousMonday(weekAgo)
     const ref = this.db.collection('favorites').doc(monday)
+    const doc = await ref.get()
+    const weekTracks = new Map()
+    if (ref.empty)
+      return { text: `no favorites found for the week of ${monday}`, tracks: weekTracks }
 
-    if (ref.empty) return { text: `no favorites found for the week of ${monday}`, tracks: [] }
-
-    const tracks = new Map()
-    ref.forEach(snap => {
-      tracks.set(snap.id, snap)
+    const { tracks } = doc.data()
+    tracks.forEach(snap => {
+      weekTracks.set(snap.id, snap)
     })
-    return { text: `${tracks.length} favortites found for the week of ${monday}`, tracks }
+    return {
+      text: `${weekTracks.size} favorite${
+        weekTracks.size > 1 ? 's' : ''
+      } found for the week of ${monday}`,
+      tracks: weekTracks,
+    }
   }
 }
 

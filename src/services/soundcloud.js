@@ -89,6 +89,42 @@ class SoundCloud {
     return p
   }
 
+  // retrieve all playlists from user
+  async getPlaylists() {
+    await this.log()
+
+    const p = new Promise(resolve => {
+      this.user.get('/me/playlists', { limit: 500 }, (err, result) => {
+        if (err) resolve(null)
+
+        resolve(result)
+      })
+    })
+
+    return p
+  }
+
+  // create or add sounds to playlist
+  async createOrUpdatePlaylist(data, previous) {
+    await this.log()
+
+    const p = new Promise(resolve => {
+      const handler = (err, result) => {
+        if (err) resolve(null)
+
+        resolve(result)
+      }
+
+      if (previous) {
+        this.user.put(`/playlists/${previous.id}`, JSON.stringify(data), handler)
+      } else {
+        this.user.post('/playlists', JSON.stringify(data), handler)
+      }
+    })
+
+    return p
+  }
+
   // like a track using it's internal id
   async like(trackId) {
     await this.log()

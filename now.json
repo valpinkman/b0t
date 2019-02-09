@@ -14,14 +14,17 @@
   "routes": [
     {
       "src": "/add",
+      "methods": ["POST"],
       "dest": "src/api/add.js"
     },
     {
       "src": "/playlist",
+      "methods": ["POST"],
       "dest": "src/api/playlist.js"
     },
     {
       "src": "/",
+      "methods": ["POST"],
       "dest": "src/api/index.js"
     }
   ],
