@@ -69,7 +69,8 @@ module.exports = async (req, res) => {
             {
               color,
               title: `${playlist.title}`,
-              text: message,
+              title_link: playlist.permalink_url,
+              pretext: message,
             },
           ],
         }),
