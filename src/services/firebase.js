@@ -61,7 +61,8 @@ class Firebase {
     const ref = this.db.collection('favorites').doc(monday)
     const doc = await ref.get()
     const weekTracks = new Map()
-    if (ref.empty)
+
+    if (!doc.exists)
       return { text: `no favorites found for the week of ${monday}`, tracks: weekTracks }
 
     const { tracks } = doc.data()

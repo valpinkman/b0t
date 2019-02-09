@@ -17,7 +17,6 @@ module.exports = async (req, res) => {
     if (!txt) throw createError(400, 'no data')
 
     const { token, response_url, text: weekAgo } = parse(txt) // eslint-disable-line camelcase
-
     res.writeHead(200, {
       'Content-Type': 'application/json',
     })
@@ -30,13 +29,12 @@ module.exports = async (req, res) => {
       body: JSON.stringify({ text: 'checking for favorites...', response_type: 'ephemeral' }),
     })
 
-    const { tracks } = await Firebase.getFavsFromWeek(weekAgo || 0)
-
+    const { tracks, text: textResponse } = await Firebase.getFavsFromWeek(weekAgo || 0)
     if (!tracks.size) {
       await fetch(response_url, {
         method: 'POST',
         body: JSON.stringify({
-          text: 'no tracks favorited yet this week',
+          text: textResponse,
         }),
       })
     } else {
@@ -85,6 +83,7 @@ module.exports = async (req, res) => {
               title: `${playlist.title}`,
               title_link: playlist.permalink_url,
               pretext: message,
+              text: textResponse,
             },
           ],
         }),
