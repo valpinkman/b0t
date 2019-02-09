@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint src",
-    "dev": "now-lambda",
+    "dev": "NODE_ENV=development now-lambda",
     "prettier": "prettier --write \"src/**/*.js\""
   },
   "devDependencies": {

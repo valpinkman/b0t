@@ -21,10 +21,6 @@
       "dest": "src/api/playlist.js"
     },
     {
-      "src": "/like",
-      "dest": "src/api/like.js"
-    },
-    {
       "src": "/",
       "dest": "src/api/index.js"
     }
