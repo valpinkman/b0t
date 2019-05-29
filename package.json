@@ -11,7 +11,7 @@
     "prettier": "prettier --write \"src/**/*.js\""
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
+    "@babel/cli": "^7.4.4",
     "@babel/core": "^7.2.2",
     "@babel/node": "^7.4.5",
     "@babel/polyfill": "^7.2.5",
