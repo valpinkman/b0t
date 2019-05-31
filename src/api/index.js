@@ -8,7 +8,7 @@ const fetch = require('node-fetch')
 const SoundCloud = require('../services/soundcloud')
 const Firebase = require('../services/firebase')
 const { isTokenLegit } = require('../utils/slack')
-const { getPreviousMonday } = require('../utils/time')
+const { getPreviousMonday, getSunday } = require('../utils/time')
 
 module.exports = async (req, res) => {
   try {
@@ -41,7 +41,7 @@ module.exports = async (req, res) => {
       const weekTracks = []
       let found
       let body
-      const title = `[dr0p select ${getPreviousMonday(weekAgo)}]`
+      const title = `[dr0p select ${getSunday(getPreviousMonday(weekAgo))}]`
       const playlists = await SoundCloud.getPlaylists()
 
       tracks.forEach((_, id) => {

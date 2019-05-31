@@ -14,12 +14,12 @@
   "routes": [
     {
       "src": "/add",
-      "methods": ["POST"],
+      "method": "POST",
       "dest": "src/api/add.js"
     },
     {
       "src": "/",
-      "methods": ["POST"],
+      "method": "POST",
       "dest": "src/api/index.js"
     }
   ],

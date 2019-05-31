@@ -3,6 +3,7 @@
  */
 
 const startOfWeek = require('date-fns/start_of_week')
+const endOfWeek = require('date-fns/end_of_week')
 const subWeeks = require('date-fns/sub_weeks')
 const format = require('date-fns/format')
 
@@ -20,6 +21,19 @@ const getMonday = (startingDate = Date.now()) => {
 }
 
 /**
+ * getMonday
+ * find the monday of the provided date
+ * returns it as a formated string 'YYYY-MM-DD'
+ * @param {Date} startingDate
+ * @returns string
+ */
+const getSunday = (startingDate = Date.now()) => {
+  const end = endOfWeek(startingDate, { weekStartsOn: 1 })
+  const clean = format(end, 'YYYY-MM-DD')
+  return clean
+}
+
+/**
  * getPreviousMonday
  * uses weeksAgo to find previous mondays
  * @param {number} weeksAgo
@@ -33,3 +47,4 @@ const getPreviousMonday = (weeksAgo = 0) => {
 
 module.exports.getMonday = getMonday
 module.exports.getPreviousMonday = getPreviousMonday
+module.exports.getSunday = getSunday
