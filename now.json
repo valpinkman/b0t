@@ -16,7 +16,7 @@
     "SLACK_COMMAND_TOKEN": "@bot-slack-command-token"
   },
   "github": {
-    "enabled": false,
+    "enabled": true,
     "autoJobCancelation": true
   }
 }
