@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "name": "dr0p-b0t",
+  "alias": ["b0t", "b0t.dr0p.pink"],
+  "env": {
+    "FIRE_API_KEY": "@bot-fb-api-key",
+    "FIRE_AUTH_DOMAIN": "@bot-fb-auth-domain",
+    "FIRE_DB_URL": "@bot-fb-db-url",
+    "FIRE_PROJECT_ID": "@bot-fb-project-id",
+    "FIRE_STORAGE_BUCKET": "@bot-fb-storage-bucket",
+    "FIRE_MESSAGING_SENDER_ID": "bot-fb-messaging-sender-id",
+    "SNDCLD_CLIENT_ID": "@bot-snd-client-id",
+    "SNDCLD_CLIENT_SECRET": "@bot-snd-client-secret",
+    "SNDCLD_USERNAME": "@bot-snd-user",
+    "SNDCLD_PSSWRD": "@bot-snd-pass",
+    "SLACK_COMMAND_TOKEN": "@bot-slack-command-token"
+  },
+  "github": {
+    "enabled": false,
+    "autoJobCancelation": true
+  }
+}
