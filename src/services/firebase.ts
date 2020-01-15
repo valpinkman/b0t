@@ -20,7 +20,7 @@ const db = app.firestore()
 
 export const addFavorite = async (track: Object) => {
   const monday = getPreviousMonday()
-  const ref = db.collection('favorites-test').doc(monday)
+  const ref = db.collection('favorites').doc(monday)
   const doc = await ref.get()
 
   if (!doc.exists) {
@@ -38,7 +38,7 @@ export const addFavorite = async (track: Object) => {
 
 export const getFavsFromWeek = async (weekAgo = 0) => {
   const monday = getPreviousMonday(weekAgo)
-  const ref = db.collection('favorites-test').doc(monday)
+  const ref = db.collection('favorites').doc(monday)
   const doc = await ref.get()
   const weekTracks = new Map()
 

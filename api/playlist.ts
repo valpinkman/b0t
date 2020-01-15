@@ -5,7 +5,7 @@ import { getFavsFromWeek } from '../src/services/firebase'
 import { createOrUpdatePlaylist, getPlaylists } from '../src/services/soundcloud'
 import { getSunday, getPreviousMonday } from '../src/utils/time'
 
-const Index = async (req: NowRequest, res: NowResponse) => {
+const Playlist = async (req: NowRequest, res: NowResponse) => {
   const { token, response_url, text: weekAgo } = req.body
   try {
     if (!token || !isTokenLegit(token)) {
@@ -15,7 +15,10 @@ const Index = async (req: NowRequest, res: NowResponse) => {
 
     await fetch(response_url, {
       method: 'POST',
-      body: JSON.stringify({ text: 'checking for favorites...', response_type: 'ephemeral' }),
+      body: JSON.stringify({
+        text: 'checking for favorites...',
+        response_type: 'ephemeral',
+      }),
     })
 
     const { tracks, text: textResponse } = await getFavsFromWeek(weekAgo || 0)
@@ -32,7 +35,6 @@ const Index = async (req: NowRequest, res: NowResponse) => {
       let found
       let body
       const title = `[dr0p select ${getSunday(new Date(getPreviousMonday(weekAgo)))}]`
-      console.log(title)
       const playlists: any[] = await getPlaylists()
 
       tracks.forEach((_, id) => {
@@ -62,7 +64,7 @@ const Index = async (req: NowRequest, res: NowResponse) => {
       }
 
       const playlist: any = await createOrUpdatePlaylist(body, found)
-      console.log('we got playlist')
+
       const message = found ? 'playlist updated!' : 'playlist created!'
       const color = found ? '#FF6C02' : '#0088ff'
 
@@ -76,14 +78,19 @@ const Index = async (req: NowRequest, res: NowResponse) => {
               title_link: playlist.permalink_url,
               pretext: message,
               text: textResponse,
-              response_type: 'ephemeral',
             },
           ],
         }),
       })
     }
 
-    res.status(200)
+    await fetch(response_url, {
+      method: 'POST',
+      body: JSON.stringify({
+        delete_original: true,
+      }),
+    })
+
     res.end()
   } catch (error) {
     await fetch(response_url, {
@@ -103,4 +110,4 @@ const Index = async (req: NowRequest, res: NowResponse) => {
   }
 }
 
-export default Index
+export default Playlist
