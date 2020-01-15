@@ -1,7 +1,7 @@
-import app from 'firebase/app'
-import 'firebase/firestore'
+import app from 'firebase/app';
+import 'firebase/firestore';
 
-import { getPreviousMonday } from '../utils/time'
+import { getPreviousMonday } from '../utils/time';
 
 const credentials = {
   apiKey: process.env.FIRE_API_KEY,
@@ -10,49 +10,54 @@ const credentials = {
   projectId: process.env.FIRE_PROJECT_ID,
   storageBucket: process.env.FIRE_STORAGE_BUCKET,
   messagingSenderId: process.env.FIRE_MESSAGING_SENDER_ID,
-}
+};
 
 if (app.apps.length === 0) {
-  app.initializeApp(credentials)
+  app.initializeApp(credentials);
 }
 
-const db = app.firestore()
+const db = app.firestore();
 
-export const addFavorite = async (track: Object) => {
-  const monday = getPreviousMonday()
-  const ref = db.collection('favorites').doc(monday)
-  const doc = await ref.get()
+export const addFavorite = async (track: Record<string, any>): Promise<void> => {
+  const monday = getPreviousMonday();
+  const ref = db.collection('favorites').doc(monday);
+  const doc = await ref.get();
 
   if (!doc.exists) {
-    await ref.set({ tracks: [track] })
+    await ref.set({ tracks: [track] });
   } else {
-    const { tracks } = doc.data()
-    let newTracks = [track]
+    const { tracks } = doc.data();
+    let newTracks = [track];
     if (tracks) {
-      newTracks = [...tracks, track]
+      newTracks = [...tracks, track];
     }
 
-    await ref.set({ tracks: newTracks })
+    await ref.set({ tracks: newTracks });
   }
-}
+};
 
-export const getFavsFromWeek = async (weekAgo = 0) => {
-  const monday = getPreviousMonday(weekAgo)
-  const ref = db.collection('favorites').doc(monday)
-  const doc = await ref.get()
-  const weekTracks = new Map()
+type ReturnValue = {
+  text: string;
+  tracks: Map<string, any>;
+};
+
+export const getFavsFromWeek = async (weekAgo = 0): Promise<ReturnValue> => {
+  const monday = getPreviousMonday(weekAgo);
+  const ref = db.collection('favorites').doc(monday);
+  const doc = await ref.get();
+  const weekTracks = new Map();
 
   if (!doc.exists)
-    return { text: `no favorites found for the week of ${monday}`, tracks: weekTracks }
+    return { text: `no favorites found for the week of ${monday}`, tracks: weekTracks };
 
-  const { tracks } = doc.data()
+  const { tracks } = doc.data();
   tracks.forEach(snap => {
-    weekTracks.set(snap.id, snap)
-  })
+    weekTracks.set(snap.id, snap);
+  });
   return {
     text: `${weekTracks.size} favorite${
       weekTracks.size > 1 ? 's' : ''
     } found for the week of ${monday}`,
     tracks: weekTracks,
-  }
-}
+  };
+};

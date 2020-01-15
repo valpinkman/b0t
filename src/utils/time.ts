@@ -1,9 +1,9 @@
-import format from 'date-fns/format'
-import startOfWeek from 'date-fns/startOfWeek'
-import endOfWeek from 'date-fns/endOfWeek'
-import subWeeks from 'date-fns/subWeeks'
+import format from 'date-fns/format';
+import startOfWeek from 'date-fns/startOfWeek';
+import endOfWeek from 'date-fns/endOfWeek';
+import subWeeks from 'date-fns/subWeeks';
 
-type DateArg = Date | number
+type DateArg = Date | number;
 
 /**
  * getMonday
@@ -13,10 +13,10 @@ type DateArg = Date | number
  * @returns string
  */
 export const getMonday = (startingDate: DateArg = Date.now()): string => {
-  const start = startOfWeek(startingDate, { weekStartsOn: 1 })
-  const clean = format(start, 'yyyy-MM-dd')
-  return clean
-}
+  const start = startOfWeek(startingDate, { weekStartsOn: 1 });
+  const clean = format(start, 'yyyy-MM-dd');
+  return clean;
+};
 
 /**
  * getMonday
@@ -26,10 +26,10 @@ export const getMonday = (startingDate: DateArg = Date.now()): string => {
  * @returns string
  */
 export const getSunday = (startingDate: DateArg = Date.now()): string => {
-  const end = endOfWeek(startingDate, { weekStartsOn: 1 })
-  const clean = format(end, 'yyyy-MM-dd')
-  return clean
-}
+  const end = endOfWeek(startingDate, { weekStartsOn: 1 });
+  const clean = format(end, 'yyyy-MM-dd');
+  return clean;
+};
 
 /**s
  * getPreviousMonday
@@ -37,8 +37,8 @@ export const getSunday = (startingDate: DateArg = Date.now()): string => {
  * @param {number} weeksAgo
  * @returns string
  */
-export const getPreviousMonday = (weeksAgo: number = 0) => {
-  const now = Date.now()
-  const weekBefore = subWeeks(now, weeksAgo)
-  return getMonday(weekBefore)
-}
+export const getPreviousMonday = (weeksAgo = 0): string => {
+  const now = Date.now();
+  const weekBefore = subWeeks(now, weeksAgo);
+  return getMonday(weekBefore);
+};
